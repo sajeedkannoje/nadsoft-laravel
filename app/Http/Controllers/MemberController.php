@@ -31,36 +31,33 @@ class MemberController extends Controller
 
     public function getMembersList()
     {
-        // Fetch the list of members and their submembers
         $members = Member::with('subMembers')->whereNull('parent_id')->get();
 
-        // Construct the HTML structure
-        $html = '<ul class="member-tree">';
+        $memberListhtml = '<ul class="member-tree">';
         foreach ($members as $member) {
-            $html .= '<li>' . $member->name;
+            $memberListhtml .= '<li>' . $member->name;
             if ($member->subMembers->count() > 0) {
-                $html .= $this->buildSubMembersHtml($member->subMembers);
+                $memberListhtml .= $this->buildSubMembersHtml($member->subMembers);
             }
-            $html .= '</li>';
+            $memberListhtml .= '</li>';
         }
-        $html .= '</ul>';
+        $memberListhtml .= '</ul>';
 
-        // Return the HTML as a response
-        return $html;
+        return $memberListhtml;
     }
 
     private function buildSubMembersHtml($submembers)
     {
-        $html = '<ul>';
+        $submemberListHtml = '<ul>';
         foreach ($submembers as $submember) {
-            $html .= '<li>' . $submember->name;
+            $submemberListHtml .= '<li>' . $submember->name;
             if ($submember->subMembers->count() > 0) {
-                $html .= $this->buildSubMembersHtml($submember->subMembers);
+                $submemberListHtml .= $this->buildSubMembersHtml($submember->subMembers);
             }
-            $html .= '</li>';
+            $submemberListHtml .= '</li>';
         }
-        $html .= '</ul>';
+        $submemberListHtml .= '</ul>';
 
-        return $html;
+        return $submemberListHtml;
     }
 }

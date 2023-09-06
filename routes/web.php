@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return route('members.index');
+    return redirect()->route('members.index');
 });
 
 Route::resource('members', MemberController::class);
